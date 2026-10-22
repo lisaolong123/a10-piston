@@ -1,10 +1,10 @@
-常量 缓存=“a10活塞v1”;
-自我.添加事件监听器添加事件监听器“安装”,e=>自我.跳过等待());
-自我.添加事件监听器(“激活”,e=>e.等待直到(自我.客户.索赔()));
-自我.添加事件监听器(“取来”,e=>{
-e.用响应回复(缓存.匹配(e.请求).然后(r=>r||获取(e.请求).然后(资源=>{
-常量 复制 = 资源.克隆();
-缓存.打开(缓存).然后(c=>c.放置(e.请求,复制));
-返回 资源;
-}).抓住(() => 缓存.匹配("/index.html"));
+const CACHE="a10-piston-v1";
+self.addEventListener("install",e=>self.skipWaiting());
+self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));
+self.addEventListener("fetch",e=>{
+  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+    const copy=res.clone();
+    caches.open(CACHE).then(c=>c.put(e.request,copy));
+    return res;
+  }).catch(()=>caches.match("/index.html"))));
 });
